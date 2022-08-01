@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "projeto-01",
+  "version": "1.0.0",
+  "description": "Configuração do Ambiente",
+  "main": "server.js",
+  "author": "Juliano Cezar Caetano",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
