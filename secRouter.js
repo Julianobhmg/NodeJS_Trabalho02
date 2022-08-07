@@ -22,81 +22,81 @@ secRouter.use('*', function(req, res, next) {
   next ()
 })
 
-//Listar a lista de produtos
-secRouter.get('/produtos', function (req, res) {
+//Listar a lista de clientes
+secRouter.get('/clientes', function (req, res) {
     knex
       .select('*')
-      .from('produto')
-      .then(produto => res.json(produto))
+      .from('cliente')
+      .then(cliente => res.json(cliente))
   })
 
 
-//Listar um produto por ID
-secRouter.get('/produtos/:id', function (req, res) {
+//Listar um cliente por ID
+secRouter.get('/clientes/:id', function (req, res) {
   let id = Number.parseInt(req.params.id)
 
   knex
   .select('*')
-  .from('produto')
+  .from('cliente')
   .where ({ id: id})
-  .then(produtos => { 
-      if (produtos.length) {
-        let produto = produtos[0]
-        res.status(200).json(produto)
+  .then(clientes => { 
+      if (clientes.length) {
+        let cliente = clientes[0]
+        res.status(200).json(cliente)
         res.end()
       } else {
-        res.status (403).json ({ message:  "Produto inexistente."}) 
+        res.status (403).json ({ message:  "cliente inexistente."}) 
       }
   })
 })
 
-//Incluir um produto
-secRouter.post('/produtos/', function (req, res) {   
-  knex('produto')
+//Incluir um cliente
+secRouter.post('/clientes/', function (req, res) {   
+  knex('cliente')
   .insert({
-    descricao: req.body.descricao,
-    valor: req.body.valor,
-    marca: req.body.marca},
-    ['id', 'descricao', 'valor', 'marca'])
-  .then (produtos => {
-    let produto = produtos[0]
-    res.json ({ produto })
+    nome: req.body.nome,
+    cpf: req.body.cpf,
+    email: req.body.email},
+    ['id', 'nome', 'cpf', 'email'])
+  .then (clientes => {
+    let cliente = clientes[0]
+    res.json ({ cliente })
   })
-  .catch (err => res.status(500).json ({ message: 'Erro ao inserir produto: ${err.message}'}))
+  .catch (err => res.status(500).json ({ message: 'Erro ao inserir cliente: ${err.message}'}))
 })
 
-//Excluir um produto
-secRouter.delete('/produtos/:id', function (req, res) {
+//Excluir um cliente
+secRouter.delete('/clientes/:id', function (req, res) {
   let id = Number.parseInt(req.params.id);
   if (id > 0) {
-      knex('produto')
+      knex('cliente')
         .where('id', id)
         .del()
-        .then(  res.status (200).json ( { messsage: "Produto/ID excluído com sucesso." }))
+        .then(  res.status (200).json ( { messsage: "cliente/ID excluído com sucesso." }))
   } else {
-    res.status (404).json ( { messsage: "Esse Produto/ID não existe." })
+    res.status (404).json ( { messsage: "Esse cliente/ID não existe." })
   }  
 })
 
 
-//Alterar um produto
-secRouter.put('/produtos/:id', function (req, res) {  
+//Alterar um cliente
+secRouter.put('/clientes/:id', function (req, res) {  
   let id = Number.parseInt(req.params.id);
   if (id > 0) {
-      knex('produto')
+      knex('cliente')
           .where('id', id)
           .update({
-              descricao: req.body.descricao,
-              valor: req.body.valor,
-              marca: req.body.marca
+              nome: req.body.nome,
+              cpf: req.body.cpf,
+              email: req.body.email
           },
-          ['id','descricao','valor','marca'])
-          .then (produtos => {
-              let produto = produtos[0]
-              res.status (200).json ( { messsage: "Produto/ID alterado com sucesso." })
+          ['id','nome','cpf','email'])
+          .then (clientes => {
+              let cliente = clientes[0]
+              res.status (200).json ( { messsage: "cliente/ID alterado com sucesso." })
           })
   } else {
-    res.status (404).json ( { messsage: "Esse Produto/ID não existe." })
+    res.status (404).json ( { messsage: "Esse cliente/ID não existe." })
   }  
 })
 module.exports = secRouter
