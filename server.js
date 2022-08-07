@@ -8,7 +8,7 @@ app.use ('/api', secRouter);
 
 // Cria um manipulador da rota padrão 
 app.get('/', function (req, res) {
-    res.send('CRUD - Acesso a BD - Juliano Cezar Caetano')
+    res.send('CRUD - Acesso a BD Clientes - Juliano Cezar Caetano')
 })
 
 // Inicializa o servidor HTTP na porta 3000

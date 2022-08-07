@@ -31,14 +31,13 @@ secRouter.get('/clientes', function (req, res) {
   })
 
 
-//Listar um cliente por ID
-secRouter.get('/clientes/:id', function (req, res) {
-  let id = Number.parseInt(req.params.id)
+secRouter.get('/clientes/:cpf', function (req, res) {
+  let cpf = Number.parseInt(req.params.cpf)
 
   knex
   .select('*')
   .from('cliente')
-  .where ({ id: id})
+  .where ({ cpf: cpf})
   .then(clientes => { 
       if (clientes.length) {
         let cliente = clientes[0]
@@ -54,10 +53,10 @@ secRouter.get('/clientes/:id', function (req, res) {
 secRouter.post('/clientes/', function (req, res) {   
   knex('cliente')
   .insert({
-    nome: req.body.nome,
     cpf: req.body.cpf,
+    nome: req.body.nome,   
     email: req.body.email},
-    ['id', 'nome', 'cpf', 'email'])
+    ['cpf', 'nome', 'email'])
   .then (clientes => {
     let cliente = clientes[0]
     res.json ({ cliente })
@@ -66,37 +65,36 @@ secRouter.post('/clientes/', function (req, res) {
 })
 
 //Excluir um cliente
-secRouter.delete('/clientes/:id', function (req, res) {
-  let id = Number.parseInt(req.params.id);
-  if (id > 0) {
+secRouter.delete('/clientes/:cpf', function (req, res) {
+  let cpf = Number.parseInt(req.params.cpf);
+  if (cpf > 0) {
       knex('cliente')
-        .where('id', id)
+        .where('cpf', cpf)
         .del()
-        .then(  res.status (200).json ( { messsage: "cliente/ID excluído com sucesso." }))
+        .then(  res.status (200).json ( { messsage: "cliente excluído com sucesso." }))
   } else {
-    res.status (404).json ( { messsage: "Esse cliente/ID não existe." })
+    res.status (404).json ( { messsage: "Esse cliente não existe." })
   }  
 })
 
 
 //Alterar um cliente
-secRouter.put('/clientes/:id', function (req, res) {  
-  let id = Number.parseInt(req.params.id);
-  if (id > 0) {
+secRouter.put('/clientes/:cpf', function (req, res) {  
+  let cpf = Number.parseInt(req.params.cpf);
+  if (cpf > 0) {
       knex('cliente')
-          .where('id', id)
+          .where('cpf', cpf)
           .update({
               nome: req.body.nome,
-              cpf: req.body.cpf,
               email: req.body.email
           },
-          ['id','nome','cpf','email'])
+          ['cpf','nome','email'])
           .then (clientes => {
               let cliente = clientes[0]
-              res.status (200).json ( { messsage: "cliente/ID alterado com sucesso." })
+              res.status (200).json ( { messsage: "cliente alterado com sucesso." })
           })
   } else {
-    res.status (404).json ( { messsage: "Esse cliente/ID não existe." })
+    res.status (404).json ( { messsage: "Esse cliente não existe." })
   }  
 })
 module.exports = secRouter
